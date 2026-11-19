@@ -1,7 +1,7 @@
 //Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
-//Date        : Thu Nov 19 00:09:27 2026
+//Date        : Thu Nov 19 13:11:03 2026
 //Host        : awesoma-win running 64-bit major release  (build 9200)
 //Command     : generate_target design_1.bd
 //Design      : design_1
@@ -13,21 +13,17 @@
 module design_1
    (ack_in,
     ack_out,
-    busy,
     clk_100MHz,
     data_in,
     data_out,
-    done,
     reset_rtl_0,
     strb_in,
     strb_out);
   input ack_in;
   output ack_out;
-  output busy;
   (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 CLK.CLK_100MHZ CLK" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME CLK.CLK_100MHZ, CLK_DOMAIN design_1_clk_100MHz, FREQ_HZ 100000000, INSERT_VIP 0, PHASE 0.000" *) input clk_100MHz;
   input data_in;
   output data_out;
-  output done;
   (* X_INTERFACE_INFO = "xilinx.com:signal:reset:1.0 RST.RESET_RTL_0 RST" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME RST.RESET_RTL_0, INSERT_VIP 0, POLARITY ACTIVE_HIGH" *) input reset_rtl_0;
   input strb_in;
   output strb_out;
@@ -39,9 +35,7 @@ module design_1
   wire [15:0]concat_seq_in_dout;
   wire data_in_1;
   wire gpio_if_0_ack_out;
-  wire gpio_if_0_busy;
   wire gpio_if_0_data_out;
-  wire gpio_if_0_done;
   wire gpio_if_0_strb_out;
   wire microblaze_0_Clk;
   wire [31:0]microblaze_0_M_AXI_DP_ARADDR;
@@ -105,11 +99,9 @@ module design_1
 
   assign ack_in_1 = ack_in;
   assign ack_out = gpio_if_0_ack_out;
-  assign busy = gpio_if_0_busy;
   assign clk_100MHz_1 = clk_100MHz;
   assign data_in_1 = data_in;
   assign data_out = gpio_if_0_data_out;
-  assign done = gpio_if_0_done;
   assign reset_rtl_0_1 = reset_rtl_0;
   assign strb_in_1 = strb_in;
   assign strb_out = gpio_if_0_strb_out;
@@ -143,10 +135,8 @@ module design_1
   design_1_gpio_if_0_1 gpio_if_0
        (.ack_in(ack_in_1),
         .ack_out(gpio_if_0_ack_out),
-        .busy(gpio_if_0_busy),
         .data_in(data_in_1),
         .data_out(gpio_if_0_data_out),
-        .done(gpio_if_0_done),
         .gpio2_i(concat_seq_in_dout),
         .gpio_o(axi_gpio_0_gpio_io_o),
         .strb_in(strb_in_1),

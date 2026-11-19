@@ -61,8 +61,6 @@ module design_1_gpio_if_0_1 (
   data_out,
   strb_out,
   ack_out,
-  busy,
-  done,
   data_in,
   strb_in,
   ack_in
@@ -73,8 +71,6 @@ output wire [15 : 0] gpio2_i;
 output wire data_out;
 output wire strb_out;
 output wire ack_out;
-output wire busy;
-output wire done;
 input wire data_in;
 input wire strb_in;
 input wire ack_in;
@@ -85,8 +81,6 @@ input wire ack_in;
     .data_out(data_out),
     .strb_out(strb_out),
     .ack_out(ack_out),
-    .busy(busy),
-    .done(done),
     .data_in(data_in),
     .strb_in(strb_in),
     .ack_in(ack_in)

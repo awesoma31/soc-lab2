@@ -16,8 +16,6 @@
 #define OUT_DATA       0x01u
 #define OUT_STRB       0x02u
 #define OUT_ACK        0x04u
-#define OUT_BUSY       0x08u
-#define OUT_DONE       0x10u
 
 static u8  A[N][N];
 static u8  B[N][N];
@@ -97,8 +95,6 @@ int main(void)
             for (j = 0; j < N; j++)
                 B[i][j] = recv_byte();
 
-        out_write(out_reg | OUT_BUSY);
-
         for (i = 0; i < N; i++) {
             for (j = 0; j < N; j++) {
                 sum = B[i][j];
@@ -108,14 +104,9 @@ int main(void)
             }
         }
 
-        out_write(out_reg & ~OUT_BUSY);
-
         for (i = 0; i < N; i++)
             for (j = 0; j < N; j++)
                 send_word(C[i][j]);
-
-        out_write(out_reg | OUT_DONE);
-        out_write(out_reg & ~OUT_DONE);
     }
 
     return 0;

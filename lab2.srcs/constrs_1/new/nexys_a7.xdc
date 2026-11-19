@@ -1,6 +1,6 @@
 ## Nexys A7-100T (xc7a100tcsg324-1) — lab2
 ## Pins taken from Digilent Nexys-A7-100T-Master.xdc
-## Port names match design_1_wrapper (clk_100MHz, reset_rtl_0, data_in, strb_in, ack_in, data_out, strb_out, ack_out, busy, done)
+## Port names match design_1_wrapper (clk_100MHz, reset_rtl_0, data_in, strb_in, ack_in, data_out, strb_out, ack_out)
 
 ## Clock 100 MHz
 set_property -dict { PACKAGE_PIN E3  IOSTANDARD LVCMOS33 } [get_ports { clk_100MHz }]
@@ -18,10 +18,6 @@ set_property -dict { PACKAGE_PIN H17 IOSTANDARD LVCMOS33 } [get_ports { data_out
 set_property -dict { PACKAGE_PIN K15 IOSTANDARD LVCMOS33 } [get_ports { strb_out }]
 ## LD2
 set_property -dict { PACKAGE_PIN J13 IOSTANDARD LVCMOS33 } [get_ports { ack_out }]
-## LD3
-set_property -dict { PACKAGE_PIN N14 IOSTANDARD LVCMOS33 } [get_ports { busy }]
-## LD4
-set_property -dict { PACKAGE_PIN R18 IOSTANDARD LVCMOS33 } [get_ports { done }]
 
 ## Switches stand in for the sequencer and the monitor on the board
 ## SW0

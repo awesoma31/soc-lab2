@@ -7,8 +7,6 @@ module gpio_if (
     output        data_out,
     output        strb_out,
     output        ack_out,
-    output        busy,
-    output        done,
 
     input         data_in,
     input         strb_in,
@@ -18,8 +16,6 @@ module gpio_if (
     assign data_out = gpio_o[0];
     assign strb_out = gpio_o[1];
     assign ack_out  = gpio_o[2];
-    assign busy     = gpio_o[3];
-    assign done     = gpio_o[4];
 
     assign gpio2_i  = {13'b0, ack_in, strb_in, data_in};
 

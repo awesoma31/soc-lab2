@@ -256,14 +256,12 @@ proc create_root_design { parentCell } {
   # Create ports
   set ack_in [ create_bd_port -dir I ack_in ]
   set ack_out [ create_bd_port -dir O ack_out ]
-  set busy [ create_bd_port -dir O busy ]
   set clk_100MHz [ create_bd_port -dir I -type clk clk_100MHz ]
   set_property -dict [ list \
    CONFIG.FREQ_HZ {100000000} \
  ] $clk_100MHz
   set data_in [ create_bd_port -dir I data_in ]
   set data_out [ create_bd_port -dir O data_out ]
-  set done [ create_bd_port -dir O done ]
   set reset_rtl_0 [ create_bd_port -dir I -type rst reset_rtl_0 ]
   set_property -dict [ list \
    CONFIG.POLARITY {ACTIVE_HIGH} \
@@ -335,9 +333,7 @@ proc create_root_design { parentCell } {
   connect_bd_net -net concat_seq_in_dout [get_bd_pins axi_gpio_0/gpio2_io_i] [get_bd_pins gpio_if_0/gpio2_i]
   connect_bd_net -net data_in_1 [get_bd_ports data_in] [get_bd_pins gpio_if_0/data_in]
   connect_bd_net -net gpio_if_0_ack_out [get_bd_ports ack_out] [get_bd_pins gpio_if_0/ack_out]
-  connect_bd_net -net gpio_if_0_busy [get_bd_ports busy] [get_bd_pins gpio_if_0/busy]
   connect_bd_net -net gpio_if_0_data_out [get_bd_ports data_out] [get_bd_pins gpio_if_0/data_out]
-  connect_bd_net -net gpio_if_0_done [get_bd_ports done] [get_bd_pins gpio_if_0/done]
   connect_bd_net -net gpio_if_0_strb_out [get_bd_ports strb_out] [get_bd_pins gpio_if_0/strb_out]
   connect_bd_net -net microblaze_0_Clk [get_bd_pins axi_gpio_0/s_axi_aclk] [get_bd_pins clk_wiz_1/clk_out1] [get_bd_pins microblaze_0/Clk] [get_bd_pins microblaze_0_axi_periph/ACLK] [get_bd_pins microblaze_0_axi_periph/M00_ACLK] [get_bd_pins microblaze_0_axi_periph/S00_ACLK] [get_bd_pins microblaze_0_local_memory/LMB_Clk] [get_bd_pins rst_clk_wiz_1_100M/slowest_sync_clk]
   connect_bd_net -net reset_rtl_0_1 [get_bd_ports reset_rtl_0] [get_bd_pins clk_wiz_1/reset] [get_bd_pins rst_clk_wiz_1_100M/ext_reset_in]

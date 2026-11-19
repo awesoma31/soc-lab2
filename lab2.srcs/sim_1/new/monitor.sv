@@ -13,8 +13,6 @@ module monitor #(
     input            ack_out,
     input            data_out,
     input            strb_out,
-    input            busy,
-    input            done,
     input     [31:0] seed,
     output reg       ack_in = 1'b0
 );
@@ -46,11 +44,11 @@ module monitor #(
     reg [7:0]  in_byte  = 0;
     reg [31:0] out_word = 0;
     bit      started   = 0;
+    bit      test_end  = 0;
     integer  in_low = 0, in_high = 0;
     integer  in_min = 255, in_max = 0;
     integer  proto_errors = 0;
     realtime t_in_first  = 0, t_in_last  = 0;
-    realtime t_busy_rise = 0, t_busy_fall = 0;
     realtime t_out_first = 0, t_out_last = 0;
 
     integer  passed = 0, failed = 0;
@@ -60,7 +58,7 @@ module monitor #(
     real     calc_sum = 0;
     integer  idle = 0;
 
-    reg ack_out_d = 1'b0, strb_out_d = 1'b0, data_out_d = 1'b0, busy_d = 1'b0, done_d = 1'b0;
+    reg ack_out_d = 1'b0, strb_out_d = 1'b0, data_out_d = 1'b0;
 
     task automatic log(input integer level, input string s);
         if (level <= verbose) $display("%s", s);
@@ -90,8 +88,6 @@ module monitor #(
         ack_out_d  <= ack_out;
         strb_out_d <= strb_out;
         data_out_d <= data_out;
-        busy_d     <= busy;
-        done_d     <= done;
 
         if (rst) begin
             ack_in <= 1'b0;
@@ -130,10 +126,6 @@ module monitor #(
                 end
             end
 
-            if (busy && !busy_d) begin t_busy_rise = $realtime; idle = 0; end
-            if (!busy && busy_d) begin t_busy_fall = $realtime; idle = 0; end
-            if (busy) idle = 0;
-
             if (strb_out && strb_out_d && data_out !== data_out_d)
                 dut_error("data_out changed while strb_out = 1");
 
@@ -161,10 +153,12 @@ module monitor #(
             end else if (!strb_out && ack_in) begin
                 ack_in <= 1'b0;
                 t_out_last = $realtime;
+                if (n_out == N_OUT && out_bit == 0)
+                    test_end = 1;
             end
 
-            if (done && !done_d) begin
-                idle = 0;
+            if (test_end) begin
+                test_end = 0;
                 test_report();
                 if (test == num_tests) begin
                     run_summary();
@@ -188,7 +182,7 @@ module monitor #(
         n_in = 0;  in_bit = 0;  n_out = 0;  out_bit = 0;  out_word = 0;  started = 0;
         in_low = 0;  in_high = 0;  proto_errors = 0;
         in_min = 255;  in_max = 0;
-        t_in_first = 0;  t_in_last = 0;  t_busy_rise = 0;  t_busy_fall = 0;
+        t_in_first = 0;  t_in_last = 0;
         t_out_first = 0;  t_out_last = 0;
         for (int i = 0; i < N; i++)
             for (int j = 0; j < N; j++) begin
@@ -235,7 +229,7 @@ module monitor #(
                     C_ref[i][j] += A[i][k] * A[k][j];
             end
 
-        t_calc  = t_busy_fall - t_busy_rise;
+        t_calc  = t_out_first - t_in_last;
         t_total = t_out_last - t_in_first;
         calc    = cycles(t_calc);
 
@@ -271,7 +265,7 @@ module monitor #(
 
         log(V_REPORT, "");
         log(V_REPORT, "--- Timing (cycles of 100 MHz) ---");
-        log(V_REPORT, $sformatf("Algorithm: %0d (%0.2f ms)", calc, t_calc / 1.0e6));
+        log(V_REPORT, $sformatf("Algorithm: %0d (%0.2f ms), last input bit -> first output bit", calc, t_calc / 1.0e6));
         log(V_REPORT, $sformatf("Transfer : input %0d, output %0d, whole test %0d (%0.2f ms)",
                                 cycles(t_in_last - t_in_first), cycles(t_out_last - t_out_first),
                                 cycles(t_total), t_total / 1.0e6));
