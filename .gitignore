@@ -1,0 +1,25 @@
+# Vivado: regenerated on build and simulation
+lab2.cache/
+lab2.runs/
+lab2.sim/
+lab2.ip_user_files/
+.Xil/
+*.jou
+*.log
+*.str
+*.backup.*
+*.pb
+
+# SDK: workspace data and intermediate build files
+lab2.sdk/.metadata/
+lab2.sdk/RemoteSystemsTempFiles/
+lab2.sdk/webtalk/
+lab2.sdk/lab1-project/Release/
+*.o
+*.d
+*.a
+# the BSP makefile needs this folder to exist, and the app links against it
+!lab2.sdk/lab1-project_bsp/microblaze_0/lib/*.a
+
+# Word lock files
+~$*
